@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="name1"></div>
+    <script>
+        var board = document.createElement("div");
+        board.style.width = "100%";
+        board.style.display = "flex";
+        board.style.flexWrap = "wrap";
+        board.style.flexDirection = "row";
+        board.style.backgroundColor = "lightgray";
+
+        fetch("https://restcountries.com/v3.1/all")
+            .then(function (data) {
+                return data.json();
+            })
+            .then(function (dataObj) {
+                console.log(dataObj)
+
+                dataObj.forEach(function (element) {
+
+                    var mydiv = document.createElement("div");
+                    mydiv.style.width = "200px";
+                    mydiv.style.height = "250px"
+                    mydiv.style.display = "flex";
+                    mydiv.style.flexDirection = "column";
+                    mydiv.style.border = "1px solid black";
+                    mydiv.style.marginRight = "20px";
+                    mydiv.style.MarginLeft = "20px";
+                    mydiv.style.marginBottom = "20px"
+                    board.appendChild(mydiv);
+
+                    var box = document.createElement("img");
+                    box.style.width = "199px";
+                    box.style.height = "100px";
+                    box.style.border = "1px solid black"
+                    box.setAttribute("src", element.flags.png);
+                    mydiv.appendChild(box);
+
+                    var v1 = document.createElement("div");
+                    v1.style.width = "200px";
+                    v1.style.height = "50px";
+                    v1.style.marginTop = "10px";
+                    v1.style.flexDirection = "column";
+                    v1.style.borderBottom = "1px solid black"
+                    v1.innerText = element.name.common;
+                    mydiv.appendChild(v1);
+
+                    var v2 = document.createElement("div");
+                    v2.style.width = "200px";
+                    v2.style.height = "50px";
+                    v2.style.marginTop = "10px";
+                    v2.style.flexDirection = "column";
+                    v2.innerText = element.car.signs;
+                    mydiv.appendChild(v2);
+
+                    var button = document.createElement("button");
+                    button.style.width = "100px";
+                    button.style.height = "30%";
+                    button.style.marginLeft = "50px"
+                    button.style.marginBottom = "20px";
+                    button.style.backgroundColor = "lightblue";
+                    button.innerText = "Get Weather";
+                    button.style.textAlign = "center";
+                    button.addEventListener("click", function () {
+
+                        var popup = document.createElement("div");
+                        popup.style.width = "350px";
+                        popup.style.height = "550px";
+                        popup.style.backgroundColor = "lightyellow";
+                        popup.style.backgroundImage = "url(2.jpg)"
+                        popup.style.backgroundSize = "350px 500px"
+                        popup.style.textAlign = "center"
+                        popup.style.position = "fixed";
+                        popup.style.marginLeft = "500px";
+                        popup.style.borderRadius = "20px";
+                        name1.appendChild(popup);
+
+                        var close = document.createElement("button");
+                        close.innerText = "X";
+                        close.style.color = "black";
+                        close.style.marginLeft = "300px";
+                        close.style.fontSize = "30px";
+                        close.style.height = "50px";
+                        close.style.width = "50px";
+                        close.style.backgroundColor = "red";
+                        close.addEventListener("click", function () {
+                            popup.style.display = "none";
+                        })
+                        popup.appendChild(close);
+
+                        var pop1 = document.createElement("h2");
+                        pop1.innerText = element.name.common + " " + "Weather";
+                        pop1.style.textAlign = "center";
+                        pop1.style.width = "100%";
+                        pop1.style.height = "50px"
+                        popup.appendChild(pop1);
+
+                        fetch("https://api.openweathermap.org/data/2.5/weather?q=" + v1.innerText + "&appid=a739c520cd3709b5b3b92c344bcb9067")
+                            .then(function (data1) {
+                                return data1.json();
+                            })
+                            .then(function (obj) {
+                                console.log(obj)
+
+                                var data1 = document.createElement("h3");
+                                data1.innerText = "Temperatures :" + obj.main.temp;
+                                popup.appendChild(data1);
+
+                                var data2 = document.createElement("h3");
+                                data2.innerText = "Temperatures-Min :" + obj.main.temp_min;
+                                popup.appendChild(data2);
+
+                                var data3 = document.createElement("h3");
+                                data3.innerText = "Temperatures-Max :" + obj.main.temp_max;
+                                popup.appendChild(data3);
+
+                                var data4 = document.createElement("h3");
+                                data4.innerText = "Feels_like :" + obj.main.feels_like;
+                                popup.appendChild(data4);
+
+                                var data5 = document.createElement("h3");
+                                data5.innerText = "Grnd_level :" + obj.main.grnd_level;
+                                popup.appendChild(data5);
+
+                                var data6 = document.createElement("h3");
+                                data6.innerText = "Humidity :" + obj.main.humidity;
+                                popup.appendChild(data6);
+
+                                var data7 = document.createElement("h3");
+                                data7.innerText = "Pressure :" + obj.main.pressure;
+                                popup.appendChild(data7);
+
+                                var data8 = document.createElement("h3")
+                                data8.innerText = "Sea_level :" + obj.main.sea_level;
+                                popup.appendChild(data8);
+
+                            })
+                    })
+                    mydiv.appendChild(button);
+                })
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+        document.body.appendChild(board);
+
+    </script>
+</body>
+
+</html>
